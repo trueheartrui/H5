@@ -1,5 +1,5 @@
 import { Button } from 'vant';
-import { Form, Field, Cell, CellGroup, Calendar, Divider, TimePicker, Stepper, Dialog, showConfirmDialog, Search, NavBar } from 'vant';
+import { Form, Field, Cell, CellGroup, Calendar, Divider, TimePicker, Stepper, Dialog, showConfirmDialog, Search, NavBar, Step, Steps  } from 'vant';
 import { Icon } from 'vant';
 import { Tabbar, TabbarItem } from 'vant';
 import { Col, Row } from 'vant';
@@ -41,5 +41,7 @@ app.use(Stepper);
 app.use(Dialog);
 app.use(Search);
 app.use(NavBar);
+app.use(Step);
+app.use(Steps);
 
 app.mount('#app')

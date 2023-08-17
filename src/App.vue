@@ -23,6 +23,13 @@ watchEffect(() => {
 const onClickLeft = ()=>{
   router.back()
 }
+
+const handleTabChange = (active)=>{
+  console.log('====================================');
+  console.log(active,'active');
+  console.log('====================================');
+  // router.push(active)
+}
 </script>
 
 <template>
@@ -34,9 +41,9 @@ const onClickLeft = ()=>{
     @click-left="onClickLeft"
   />
   <RouterView />
-  <van-tabbar v-if="!currentRoute.noShowBottomTab" item v-model="active">
-    <van-tabbar-item name="home" to="home" icon="home-o">首页</van-tabbar-item>
-    <van-tabbar-item name="user" to="user" icon="user-o">我的</van-tabbar-item>
+  <van-tabbar :placeholder="true" v-if="!currentRoute.noShowBottomTab" route v-model="active" @change="handleTabChange">
+    <van-tabbar-item to="home" icon="home-o">首页</van-tabbar-item>
+    <van-tabbar-item to="user" icon="user-o">我的</van-tabbar-item>
   </van-tabbar>
 </template>
 

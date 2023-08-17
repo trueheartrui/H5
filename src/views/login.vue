@@ -40,16 +40,17 @@ const changeInputType = () => {
 }
 
 const onSubmit = () => {
-  // router.push('home')
   $api.post('test/usercenter/v1/account/login',{
     account:account.value,
     password:password.value
   },{
-    headers: { 'showLoading': true }
+    showLoading:true
   }).then(res=>{
     console.log('====================================');
-    console.log(res);
+    console.log(res,'RES');
     console.log('====================================');
+    localStorage.setItem('token','aaaaa')
+    router.push('home')
   })
 }
 

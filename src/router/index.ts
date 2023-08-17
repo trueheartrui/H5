@@ -56,6 +56,16 @@ const router = createRouter({
       component: editPatient
     },
     {
+      path: '/toDo',
+      name: 'toDo',
+      component: ()=>import('../views/toDo.vue')
+    },
+    {
+      path: '/myProject',
+      name: 'myProject',
+      component: ()=>import('../views/myProject.vue')
+    },
+    {
       path: '/about',
       name: 'about',
       // route level code-splitting
@@ -65,5 +75,15 @@ const router = createRouter({
     }
   ]
 })
+
+router.beforeEach(((to, from)=>{
+  console.log('====================================');
+  console.log(to,from);
+  console.log('====================================');
+  const token = localStorage.getItem('token')
+  if(!token && to.name !== 'loginVue'){
+    return {name:'loginVue'}
+  }
+}))
 
 export default router
