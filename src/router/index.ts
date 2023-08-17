@@ -4,6 +4,8 @@ import loginVue from '@/views/login.vue'
 import home from '@/views/home.vue'
 import register from '@/views/register.vue'
 import user from '@/views/user.vue'
+import patient from '@/views/patient.vue'
+import editPatient from '@/views/editPatient.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -16,6 +18,11 @@ const router = createRouter({
     {
       path: '/login',
       name: 'loginVue',
+      meta:{
+        title:'',
+        show:false,
+        noShowBottomTab:true
+      },
       component: loginVue
     },
     {
@@ -32,6 +39,21 @@ const router = createRouter({
       path: '/home',
       name: 'home',
       component: home
+    },
+    {
+      path: '/patient',
+      name: 'patient',
+      component: patient
+    },
+    {
+      path: '/editPatient',
+      name: 'editPatient',
+      meta:{
+        title:'编辑用户',
+        show:true,
+        noShowBottomTab:true
+      },
+      component: editPatient
     },
     {
       path: '/about',

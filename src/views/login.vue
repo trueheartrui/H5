@@ -1,7 +1,7 @@
 <template>
   <van-form @failed="onFailed" @submit="onSubmit">
     <van-cell-group inset>
-      <van-field v-model="phone" name="pattern" placeholder="请输入手机号" :rules="[{ pattern, message: '请输入正确的手机号' }]" />
+      <van-field v-model="account" name="pattern" placeholder="请输入手机号" :rules="[{ pattern, message: '请输入正确的手机号' }]" />
       <van-field v-model="password" name="validator" :type="inputType" placeholder="请输入密码"
         :rules="[{ required: true, message: '请输入密码' }]" />
       <van-icon v-show="inputType === 'text'" @click="changeInputType" name="eye-o" />
@@ -20,10 +20,14 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { getCurrentInstance } from 'vue';
 import router from '@/router';
 
-const phone = ref('');
-const password = ref('abc');
+const { proxy } = getCurrentInstance()
+const $api = proxy.$api
+
+const account = ref('13834382097');
+const password = ref('wd123456');
 const inputType = ref('password');
 const pattern = /\d{11}/;
 
@@ -36,7 +40,17 @@ const changeInputType = () => {
 }
 
 const onSubmit = () => {
-  router.push('home')
+  // router.push('home')
+  $api.post('test/usercenter/v1/account/login',{
+    account:account.value,
+    password:password.value
+  },{
+    headers: { 'showLoading': true }
+  }).then(res=>{
+    console.log('====================================');
+    console.log(res);
+    console.log('====================================');
+  })
 }
 
 const onFailed = (errorInfo) => {

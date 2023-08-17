@@ -1,12 +1,40 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
-import { ref } from 'vue';
+import router from './router';
+import { reactive, ref, watchEffect } from 'vue';
+
 const active = ref('home')
+const currentRoute = reactive({
+  title:'',
+  show:false,
+  noShowBottomTab:false
+})
+
+watchEffect(() => {
+  // console.log('====================================');
+  // console.log(router.currentRoute.value.meta);
+  // console.log('====================================');
+  const { title, show, noShowBottomTab } = router.currentRoute.value.meta
+  currentRoute.title = title || ''
+  currentRoute.show = show || false
+  currentRoute.noShowBottomTab = noShowBottomTab
+})
+
+const onClickLeft = ()=>{
+  router.back()
+}
 </script>
 
 <template>
+  <van-nav-bar
+    v-if="currentRoute.show"
+    :title="currentRoute.title"
+    left-text="返回"
+    left-arrow
+    @click-left="onClickLeft"
+  />
   <RouterView />
-  <van-tabbar item v-model="active">
+  <van-tabbar v-if="!currentRoute.noShowBottomTab" item v-model="active">
     <van-tabbar-item name="home" to="home" icon="home-o">首页</van-tabbar-item>
     <van-tabbar-item name="user" to="user" icon="user-o">我的</van-tabbar-item>
   </van-tabbar>
