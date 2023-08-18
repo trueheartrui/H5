@@ -1,10 +1,11 @@
 import { Button } from 'vant';
-import { Form, Field, Cell, CellGroup, Calendar, Divider, TimePicker, Stepper, Dialog, showConfirmDialog, Search, NavBar, Step, Steps  } from 'vant';
+import { Form, Field, Cell, CellGroup, Calendar, Divider, TimePicker, Stepper, Dialog, showConfirmDialog, Search, NavBar, Step, Steps, List  } from 'vant';
 import { Icon } from 'vant';
 import { Tabbar, TabbarItem } from 'vant';
 import { Col, Row } from 'vant';
 import { Cascader } from 'vant';
 import { Popup } from 'vant';
+import './assets/app.scss'
 import './assets/variable.scss'
 
 import { createApp } from 'vue'
@@ -43,5 +44,6 @@ app.use(Search);
 app.use(NavBar);
 app.use(Step);
 app.use(Steps);
+app.use(List);
 
 app.mount('#app')

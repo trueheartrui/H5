@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="padding10">
     <van-steps direction="vertical" :active="active">
       <van-step>
         <h3>【城市】物流状态1</h3>

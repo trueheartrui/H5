@@ -3,7 +3,7 @@ import { RouterView } from 'vue-router'
 import router from './router';
 import { reactive, ref, watchEffect } from 'vue';
 
-const active = ref('home')
+const active = ref(0)
 const currentRoute = reactive({
   title:'',
   show:false,
@@ -42,8 +42,8 @@ const handleTabChange = (active)=>{
   />
   <RouterView />
   <van-tabbar :placeholder="true" v-if="!currentRoute.noShowBottomTab" route v-model="active" @change="handleTabChange">
-    <van-tabbar-item to="home" icon="home-o">首页</van-tabbar-item>
-    <van-tabbar-item to="user" icon="user-o">我的</van-tabbar-item>
+    <van-tabbar-item :class="{'van-tabbar-item--active':active==0}" to="home" icon="home-o">首页</van-tabbar-item>
+    <van-tabbar-item :class="{'van-tabbar-item--active':active==1}" to="user" icon="user-o">我的</van-tabbar-item>
   </van-tabbar>
 </template>
 

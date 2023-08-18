@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="padding24">
     <van-row>
       <van-col span="24">
         <van-button type="primary" class="item" @click="handleSkip('toDo')">日常代办</van-button>

@@ -18,17 +18,20 @@ const router = createRouter({
     {
       path: '/login',
       name: 'loginVue',
-      meta:{
-        title:'',
-        show:false,
-        noShowBottomTab:true
+      meta: {
+        title: '',
+        show: false,
+        noShowBottomTab: true
       },
       component: loginVue
     },
     {
       path: '/register',
       name: 'register',
-      component: register
+      meta: {
+        noShowBottomTab: true
+      },
+      component: () => import('../views/register.vue')
     },
     {
       path: '/user',
@@ -48,22 +51,22 @@ const router = createRouter({
     {
       path: '/editPatient',
       name: 'editPatient',
-      meta:{
-        title:'编辑用户',
-        show:true,
-        noShowBottomTab:true
+      meta: {
+        title: '编辑用户',
+        show: true,
+        noShowBottomTab: true
       },
       component: editPatient
     },
     {
       path: '/toDo',
       name: 'toDo',
-      component: ()=>import('../views/toDo.vue')
+      component: () => import('../views/toDo.vue')
     },
     {
       path: '/myProject',
       name: 'myProject',
-      component: ()=>import('../views/myProject.vue')
+      component: () => import('../views/myProject.vue')
     },
     {
       path: '/about',
@@ -76,13 +79,16 @@ const router = createRouter({
   ]
 })
 
-router.beforeEach(((to, from)=>{
+const whiteRoutes = ['loginVue', 'register']
+router.beforeEach(((to, from) => {
   console.log('====================================');
-  console.log(to,from);
+  console.log(to, from, whiteRoutes.includes(to.name));
   console.log('====================================');
   const token = localStorage.getItem('token')
-  if(!token && to.name !== 'loginVue'){
-    return {name:'loginVue'}
+  if (!token && !whiteRoutes.includes(to.name)) {
+    return { name: 'loginVue' }
+  } else if(token && to.name === 'loginVue'){
+    return { name: 'home' }
   }
 }))
 
