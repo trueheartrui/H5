@@ -6,7 +6,7 @@
       <van-field v-model="formData.phone" placeholder="请输入手机号" type="tel" maxlength="11" :rules="[{ pattern, message: '请输入正确的手机号' }]" />
       <van-row justify="space-between" align="center">
         <van-col span="20">
-          <van-field v-model="formData.password" :type="inputType" placeholder="请输入密码" :rules="[{ required: true, message: '请输入密码' }]" />
+          <van-field v-model="formData.pwd" :type="inputType" placeholder="请输入密码" :rules="[{ required: true, message: '请输入密码' }]" />
         </van-col>
         <van-col>
           <van-icon class="icon" v-show="inputType === 'text'" @click="changeInputType(1)" name="eye-o" />
@@ -16,7 +16,7 @@
 
       <van-row justify="space-between" align="center">
         <van-col span="20">
-          <van-field v-model="formData.rePassword" :type="inputType2" placeholder="请再次输入密码" :rules="[{ required: true, message: '请再次输入密码' }]" />
+          <van-field v-model="formData.pwd1" :type="inputType2" placeholder="请再次输入密码" name="validatorMessage" :rules="[{ validator: validatorMessage }]" />
         </van-col>
         <van-col>
           <van-icon class="icon" v-show="inputType2 === 'text'" @click="changeInputType(2)" name="eye-o" />
@@ -35,12 +35,18 @@
 </template>
 
 <script setup>
-import { reactive, ref } from "vue";
+import { reactive, ref, getCurrentInstance } from "vue";
+import router from '@/router';
+
+const { proxy } = getCurrentInstance()
+const $api = proxy.$api
+
 const formData = reactive({
   name: '',
   phone: '',
-  password: '',
-  rePassword: ''
+  pwd: '',
+  pwd1: '',
+  type:0
 })
 
 const inputType = ref('password');
@@ -64,8 +70,27 @@ const changeInputType = (val) => {
 
 const pattern = /\d{11}/;
 
+// 校验函数可以直接返回一段错误提示
+const validatorMessage = (val) => {
+  if(!val){
+    return '请再次输入密码'
+  }else if(val !== formData.pwd){
+    return '两次密码不一致'
+  }
+};
+
 const onSubmit = () => {
-  router.push('home')
+  $api.post('/tmp/v1/user/register',formData,{
+    showLoading:true
+  }).then(res=>{
+    if(res.success){
+      console.log('====================================');
+      console.log(res,'RES');
+      console.log('====================================');
+      localStorage.setItem('token','aaaaa')
+      router.push('home')
+    }
+  })
 }
 
 const onFailed = (errorInfo) => {

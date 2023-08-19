@@ -1,0 +1,42 @@
+.footer{
+  position: fixed;
+  left: 15px;
+  bottom: 0;
+  width: 345px;
+  background-color: #fff;
+  .save{
+    margin-bottom: 30px;
+  }
+}
+.editPatient{
+  min-height: 100vh;
+  padding-bottom: 104px;
+  box-sizing: border-box;
+  overflow: auto;
+}
+.add{
+  width: 345px;
+  margin: 0 auto;
+  margin-top: 40px;
+}
+
+.addItem{
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.addIcon{
+  margin-left: 4px;
+}
+.editText{
+  color: #1989fa;
+  font-size: 14px;
+  margin-right: 10px;
+}
+.operation{
+  margin-top: 10px;
+}
+.delteText{
+  color: #ee0a24;
+  font-size: 14px;
+}

@@ -6,14 +6,15 @@ import register from '@/views/register.vue'
 import user from '@/views/user.vue'
 import patient from '@/views/patient.vue'
 import editPatient from '@/views/editPatient.vue'
+import toEditPatient from '@/views/toEditPatient.vue'
+import project from '@/views/project.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
-      name: 'homes',
-      component: HomeView
+      redirect:'home',
     },
     {
       path: '/login',
@@ -41,6 +42,7 @@ const router = createRouter({
     {
       path: '/home',
       name: 'home',
+      meta:{title:'首页'},
       component: home
     },
     {
@@ -67,6 +69,16 @@ const router = createRouter({
       path: '/myProject',
       name: 'myProject',
       component: () => import('../views/myProject.vue')
+    },
+    {
+      path: '/toEditPatient',
+      name: 'toEditPatient',
+      component: () => import('../views/toEditPatient.vue')
+    },
+    {
+      path: '/project',
+      name: 'project',
+      component: () => import('../views/project.vue')
     },
     {
       path: '/about',

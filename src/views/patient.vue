@@ -1,9 +1,10 @@
 <template>
     <div class="patient">
-        <van-search class="search" v-model="name" show-action @search="onSearch" @cancel="onCancel" placeholder="请输入搜索关键词" />
+        <van-search class="search" v-model="name" show-action @search="onSearch" @cancel="onCancel"
+            placeholder="请输入搜索关键词" />
         <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
             <van-row class="patientItem" v-for="item in list" :key="item" justify="space-between" align="center">
-                <van-col class="name" span="8">{{item}}</van-col>
+                <van-col class="name" span="8">{{ item.name }}</van-col>
                 <van-col class="operate">
                     <van-row>
                         <van-col>
@@ -14,7 +15,7 @@
                         </van-col>
                     </van-row>
                 </van-col>
-            </van-row>  
+            </van-row>
         </van-list>
         <van-row justify="end">
             <van-button class="add" type="primary" @click="add">添加</van-button>
@@ -26,38 +27,64 @@
 import router from '@/router';
 import { getCurrentInstance, onMounted, ref } from 'vue';
 const { proxy } = getCurrentInstance()
+const $api = proxy.$api
 
 const name = ref('')
 const list = ref([]);
 const loading = ref(false);
 const finished = ref(false);
+const pageObj = ref({
+    pageNum:1,
+    pageSize:10,
+    pages:1
+})
 
-onMounted(()=>{
-   
+onMounted(() => {
+    getData()
 })
 
 const onSearch = (val) => {
     console.log('====================================');
-    console.log('search',val);
+    console.log('search', val);
     console.log('====================================');
+    pageObj.value.pageNum = 1
+    getData()
+}
+
+const getData = () => {
+    if(pageObj.value.pageNum > pageObj.value.pages){
+        finished.value = true;
+    }
+    $api.post1('/tmp/v1/user/list', {name:name.value,pageNum:1,pageSize:10}, {}, {
+        showLoading: true
+    }).then(res => {
+        if(res.success){
+            list.value = res.data.list || []
+            pageObj.value.pages = res.data.pages
+        }
+    }).finally(()=>{
+        loading.value = false;
+        pageObj.value.pageNum++
+    })
 }
 
 const onLoad = () => {
-    // 异步更新数据
-    // setTimeout 仅做示例，真实场景中一般为 ajax 请求
-    setTimeout(() => {
-        for (let i = 0; i < 10; i++) {
-            list.value.push(list.value.length + 1);
-        }
+    // // 异步更新数据
+    // // setTimeout 仅做示例，真实场景中一般为 ajax 请求
+    // setTimeout(() => {
+    //     for (let i = 0; i < 10; i++) {
+    //         list.value.push(list.value.length + 1);
+    //     }
 
-        // 加载状态结束
-        loading.value = false;
+    //     // 加载状态结束
+    //     loading.value = false;
 
-        // 数据全部加载完成
-        if (list.value.length >= 40) {
-            finished.value = true;
-        }
-    }, 1000);
+    //     // 数据全部加载完成
+    //     if (list.value.length >= 40) {
+    //         finished.value = true;
+    //     }
+    // }, 1000);
+    getData()
 };
 
 const onCancel = () => {
@@ -67,7 +94,7 @@ const onCancel = () => {
 }
 
 const edit = () => {
-    router.push('editPatient')
+    router.push('toEditPatient')
 }
 
 const add = () => {
@@ -105,12 +132,13 @@ const deleteItem = (name) => {
 </script>
 
 <style lang="scss" scoped>
-.search{
+.search {
     position: fixed;
     width: 100%;
     left: 0;
     top: 0;
 }
+
 .patient {
     background-color: #f5f5f5;
     height: 100vh;

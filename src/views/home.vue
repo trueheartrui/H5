@@ -14,7 +14,7 @@
 
     <van-row>
       <van-col span="24">
-        <van-button type="primary" class="item" @click="handleSkip('')">项目管理</van-button>
+        <van-button type="primary" class="item" @click="handleSkip('project')">项目管理</van-button>
       </van-col>
     </van-row>
 

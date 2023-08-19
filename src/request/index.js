@@ -1,7 +1,7 @@
 import axios from "axios";
 import { showFailToast, showLoadingToast } from 'vant';
 
-// axios.defaults.baseURL = 'https://hrss-api.fat.wdeduc.com';
+// axios.defaults.baseURL = 'http://154.8.146.47:8002';
 let loadingInstance = null
 // 添加请求拦截器
 axios.interceptors.request.use(function (config) {
@@ -37,18 +37,31 @@ axios.interceptors.response.use(function (response) {
         showFailToast(response.data.message) 
         return Promise.resolve(response.data);
     }
-    return response;
+    return response.data;
 }, function (error) {
     // 超出 2xx 范围的状态码都会触发该函数。
     // 对响应错误做点什么
+    loadingInstance && loadingInstance.close()
     return Promise.reject(error);
 });
 
 export const api = {
-    get:(url,config)=>{
-        return axios.get(url,config)
+    get:(url,params,config)=>{
+        console.log('====================================');
+        console.log(params,'params');
+        console.log('====================================');
+        return axios.get(url,{params},config)
     },
     post:(url,data,config)=>{
         return axios.post(url,data,config)
+    },
+    post1:(url,params,data,config)=>{
+        return axios({
+            method: 'post',
+            url,
+            data,
+            params,
+            config
+        })
     }
 } 

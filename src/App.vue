@@ -15,9 +15,10 @@ watchEffect(() => {
   // console.log(router.currentRoute.value.meta);
   // console.log('====================================');
   const { title, show, noShowBottomTab } = router.currentRoute.value.meta
-  currentRoute.title = title || ''
-  currentRoute.show = show || false
+  // currentRoute.title = title || ''
+  // currentRoute.show = show || false
   currentRoute.noShowBottomTab = noShowBottomTab
+  document.title = title
 })
 
 const onClickLeft = ()=>{
@@ -33,13 +34,13 @@ const handleTabChange = (active)=>{
 </script>
 
 <template>
-  <van-nav-bar
+  <!-- <van-nav-bar
     v-if="currentRoute.show"
     :title="currentRoute.title"
     left-text="返回"
     left-arrow
     @click-left="onClickLeft"
-  />
+  /> -->
   <RouterView />
   <van-tabbar :placeholder="true" v-if="!currentRoute.noShowBottomTab" route v-model="active" @change="handleTabChange">
     <van-tabbar-item :class="{'van-tabbar-item--active':active==0}" to="home" icon="home-o">首页</van-tabbar-item>
