@@ -2,12 +2,13 @@
   <div class="project padding16">
     <Draggable v-model="project.value" ref="tree" virtualization :defaultOpen="false">
       <template #default="{ node, stat }">
-        <van-cell :title="node.name" icon="shop-o" @click="stat.open = !stat.open">
+        <van-cell :title="node.name" icon="label-o" @click="stat.open = !stat.open">
 
           <template #title>
             <span>
               {{ node.name }}
-              <van-icon name="add-o" @click="add(node)" /> 
+              <van-icon class="icon" color="#1989fa" name="add-o" @click="add(node)" /> 
+              <van-icon class="icon" color="#ee0a24" name="delete-o" @click="deleteItem(node)" /> 
             </span>
             
           </template>
@@ -48,6 +49,7 @@ import { getCurrentInstance,defineComponent } from 'vue';
 import router from '@/router';
 import { reactive } from 'vue';
 import { ref } from 'vue';
+import { showSuccessToast } from "vant";
 // import data1 from './data.json'
 
 const { proxy } = getCurrentInstance()
@@ -68,7 +70,7 @@ onMounted(() => {
 })
 
 const getTree = ()=>{
-  $api.get('/tmp/v1/category/getTree', { code: '' }, {
+  $api.get('/tmp/v1/hospital/category/getTree', { code: '' }, {
     showLoading: true
   }).then(res => {
     project.value = res.data || []
@@ -107,7 +109,7 @@ const handleAdd = () => {
     console.log('====================================');
     console.log('ADD', data);
     console.log('====================================');
-    $api.post('/tmp/v1/category/save', data, {
+    $api.post('/tmp/v1/hospital/category/save', data, {
       showLoading: true
     }).then(res => {
       if (res.success) {
@@ -119,6 +121,45 @@ const handleAdd = () => {
     })
   })
 }
+
+const deleteId = ref(0)
+
+const beforeClose = (action) =>
+  new Promise(async (resolve) => {
+    if (action === 'confirm') {
+      const res = await confirmDelete()
+      resolve(res)
+    } else {
+      // 拦截取消操作
+      resolve(true);
+    }
+  });
+
+const deleteItem = (item) => {
+  deleteId.value = item.id
+  proxy.$showConfirmDialog({
+    title: '提示',
+    allowHtml: true,
+    className: 'confirmDialog',
+    message: () => {
+      return `<span>确定要删除 <span style="color:#1989fa">${item.name}</span> 该项目吗?</span>`
+    },
+    beforeClose,
+  })
+}
+
+const confirmDelete = () => {
+  return new Promise<void>((resolve, reject) => {
+    $api.get('/tmp/v1/hospital/category/delete', { id: deleteId.value }).then(res => {
+        if (res.success) {
+            showSuccessToast('删除成功')
+            getTree()
+            resolve(true)
+        }
+    })
+  })
+}
+
 </script>
 
 <style scoped lang="scss">

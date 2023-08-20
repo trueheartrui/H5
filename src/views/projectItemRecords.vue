@@ -1,14 +1,14 @@
 <template>
   <div class="myProject">
-    <h4>我的项目</h4>
+    <h4>{{categoryName}}</h4>
     <van-cell-group inset>
       
       <template v-if="list.length">
-        <van-cell v-for="(item,i) in list" :key="i" :title="item.categoryName" :value="`${item.number}次`" />
+        <van-cell icon="records" v-for="(item,i) in list" :key="i" :title="item.createTime" :value="`${item.type == 1? '+':'-'}${item.number}次`" />
       </template>
       
       <div v-else class="emptyOuter">
-        <van-empty description="暂无项目"></van-empty>
+        <van-empty description="暂无记录"></van-empty>
       </div>
       
     </van-cell-group>
@@ -16,11 +16,13 @@
 </template>
 
 <script setup lang="ts">
+import router from '@/router';
 import { ref } from 'vue';
 import { onMounted } from 'vue';
 import { getCurrentInstance } from 'vue';
 
 const {proxy} = getCurrentInstance()
+const {id,categoryName} = router.currentRoute.value.query
 onMounted(()=>{
   getData()
 })
@@ -28,9 +30,9 @@ onMounted(()=>{
 const list = ref([])
 
 const getData = ()=>{
-  proxy.$api.get('/tmp/v1/hospital/user/patientAccount').then(res=>{
+  proxy.$api.get('/tmp/v1/hospital/patientItem/itemRecords',{id}).then(res=>{
     if(res.success){
-      list.value = res.data.list || []
+      list.value = res.data || []
     }
   })
 }

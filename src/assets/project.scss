@@ -1,13 +1,27 @@
+.project{
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 50px);
+  box-sizing: border-box;
+}
+
 .add{
   width: 345px;
   margin: 0 auto;
-  margin-top: 30px;
+  // margin-top: 30px;
+  margin-top: 16px;
 }
+
 :deep(.he-tree){
+  flex: 1;
   background-color: #fff;
   border-radius: 8px;
   .tree-node{
     height: 40px;
     // background-color: #fff;
   }
+}
+
+.icon{
+  margin-left: 10px;
 }

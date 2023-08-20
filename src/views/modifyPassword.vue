@@ -1,9 +1,9 @@
 <template>
-  <van-form class="outer" @failed="onFailed" @submit="onSubmit">
-    <h3>账号注册</h3>
+  <van-form class="toEditPatient" @failed="onFailed" @submit="onSubmit">
+    <h4>修改密码</h4>
     <van-cell-group inset>
       <van-field v-model="formData.name" placeholder="请输入姓名" :rules="[{ required: true, message: '请输入姓名' }]" />
-      <van-field v-model="formData.phone" placeholder="请输入手机号" type="tel" maxlength="11" :rules="[{ pattern, message: '请输入正确的手机号' }]" />
+      <van-field v-model="formData.phone" maxlength="11" placeholder="请输入手机号" :rules="[{ pattern, message: '请输入正确的手机号' }]" />
       <van-row justify="space-between" align="center">
         <van-col span="20">
           <van-field v-model="formData.pwd" :type="inputType" placeholder="请输入密码" :rules="[{ required: true, message: '请输入密码' }]" />
@@ -23,30 +23,54 @@
           <van-icon class="icon" v-show="inputType2 === 'password'" @click="changeInputType(2)" name="closed-eye" />
         </van-col>
       </van-row>
-      
     </van-cell-group>
-
-    <div class="margin16">
-      <van-button round block type="primary" native-type="submit">
-        注册
-      </van-button>
-    </div>
+    <van-button class="save" type="primary" round block native-type="submit">确定</van-button>
   </van-form>
 </template>
 
-<script setup>
-import { reactive, ref, getCurrentInstance } from "vue";
-import router from '@/router';
+<script setup lang="ts">
+import router from "@/router";
+import { showSuccessToast } from "vant";
+import { getCurrentInstance } from "vue";
+import { onBeforeMount, reactive, ref } from "vue";
+const {proxy} = getCurrentInstance()
+const phone = router.currentRoute.value.query.phone || ''
+onBeforeMount(function () {
+  
+})
 
-const { proxy } = getCurrentInstance()
-const $api = proxy.$api
 
 const formData = reactive({
   name: '',
-  phone: '',
+  phone,
   pwd: '',
   pwd1: '',
 })
+
+const pattern = /\d{11}/;
+
+// 校验函数可以直接返回一段错误提示
+const validatorMessage = (val) => {
+  if(!val){
+    return '请再次输入密码'
+  }else if(val !== formData.pwd){
+    return '两次密码不一致'
+  }
+};
+
+const onSubmit = () => {
+  proxy.$api.post('/tmp/v1/hospital/user/resetPwd',formData).then(res=>{
+    if(res.success){
+      showSuccessToast('修改成功，请重新登录！')
+      localStorage.clear()
+      router.replace('/login')
+    }
+  })
+}
+
+const onFailed = (errorInfo) => {
+  console.log('failed', errorInfo);
+};
 
 const inputType = ref('password');
 const inputType2 = ref('password');
@@ -66,55 +90,24 @@ const changeInputType = (val) => {
     }
   }
 }
-
-const pattern = /\d{11}/;
-
-// 校验函数可以直接返回一段错误提示
-const validatorMessage = (val) => {
-  if(!val){
-    return '请再次输入密码'
-  }else if(val !== formData.pwd){
-    return '两次密码不一致'
-  }
-};
-
-const onSubmit = () => {
-  $api.post('/tmp/v1/hospital/user/register',formData,{
-    showLoading:true
-  }).then(res=>{
-    if(res.success){
-      proxy.$showToast('注册成功')
-      router.replace('/login?phone='+formData.phone)
-    }
-  })
-}
-
-const onFailed = (errorInfo) => {
-  console.log('failed', errorInfo);
-};
 </script>
 
 <style lang="scss" scoped>
+h4 {
+  margin-bottom: 10px;
+}
+
+.toEditPatient{
+  overflow: auto;
+}
+
+.save{
+  width: 345px;
+  margin: 0 auto;
+  margin-top: 40px;
+}
+
 .icon{
   margin-right: 16px;
-}
-.toRegister{
-  text-align: right;
-  margin-right: 16px;
-}
-.login,.register{
-  font-size: 14px;
-}
-
-.margin16{
-  margin: 16px;
-}
-
-h3{
-  margin-left: 32px;
-}
-
-.outer{
-  margin-top: 30px;
 }
 </style>

@@ -34,6 +34,14 @@
 import { ref } from 'vue';
 import { getCurrentInstance } from 'vue';
 import router from '@/router';
+import { onBeforeMount } from 'vue';
+
+onBeforeMount(()=>{
+  const p = router.currentRoute.value.query.phone
+  if(p){
+    phone.value = p
+  }
+})
 
 const { proxy } = getCurrentInstance()
 const $api = proxy.$api
@@ -52,17 +60,21 @@ const changeInputType = () => {
 }
 
 const onSubmit = () => {
-  $api.post('/tmp/v1/user/login',{
+  $api.post('/tmp/v1/hospital/user/login',{
     phone:phone.value,
     pwd:pwd.value
   },{
     showLoading:true
   }).then(res=>{
-    console.log('====================================');
-    console.log(res,'RES');
-    console.log('====================================');
-    localStorage.setItem('token','aaaaa')
-    router.push('home')
+    if(res.success){
+      localStorage.setItem('token',res.data.uCode)
+      localStorage.setItem('type',res.data.type)
+      if(res.data.type == 1){
+        router.push('managerHomeVue')
+      }else{
+        router.push('userHomeVue')
+      }
+    }
   })
 }
 

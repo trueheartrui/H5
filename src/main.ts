@@ -1,5 +1,5 @@
 import { Button } from 'vant';
-import { Form, Field, Cell, CellGroup, Calendar, Divider, TimePicker, Stepper, Dialog, showConfirmDialog, Search, NavBar, Step, Steps, List, Tag, SwipeCell   } from 'vant';
+import { Form, Field, Cell, CellGroup, Calendar, Divider, TimePicker, Stepper, Dialog, showConfirmDialog, showToast, showSuccessToast, showNotify, Search, NavBar, Step, Steps, List, Tag, SwipeCell,Empty   } from 'vant';
 import { Icon } from 'vant';
 import { Tabbar, TabbarItem } from 'vant';
 import { Col, Row } from 'vant';
@@ -17,6 +17,9 @@ import { api } from './request'
 
 const app = createApp(App)
 app.config.globalProperties.$showConfirmDialog = showConfirmDialog
+app.config.globalProperties.$showSuccessToast = showSuccessToast
+app.config.globalProperties.$showToast = showToast
+app.config.globalProperties.$showNotify = showNotify
 app.config.globalProperties.$api = api
 
 app.use(createPinia())
@@ -47,5 +50,6 @@ app.use(Steps);
 app.use(List);
 app.use(Tag);
 app.use(SwipeCell)
+app.use(Empty)
 
 app.mount('#app')

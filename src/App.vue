@@ -2,35 +2,38 @@
 import { RouterView } from 'vue-router'
 import router from './router';
 import { reactive, ref, watchEffect } from 'vue';
+import { onMounted } from 'vue';
+const type = ref('')
 
 const active = ref(0)
 const currentRoute = reactive({
-  title:'',
-  show:false,
-  noShowBottomTab:false
+  title: '',
+  show: false,
+  noShowBottomTab: false
+})
+
+onMounted(()=>{
+  console.log('====================================');
+  console.log(type);
+  console.log('====================================');
 })
 
 watchEffect(() => {
   // console.log('====================================');
-  // console.log(router.currentRoute.value.meta);
+  // console.log(router.currentRoute);
   // console.log('====================================');
   const { title, show, noShowBottomTab } = router.currentRoute.value.meta
   // currentRoute.title = title || ''
   // currentRoute.show = show || false
   currentRoute.noShowBottomTab = noShowBottomTab
   document.title = title
+  type.value = localStorage.getItem('type')
 })
 
-const onClickLeft = ()=>{
+const onClickLeft = () => {
   router.back()
 }
 
-const handleTabChange = (active)=>{
-  console.log('====================================');
-  console.log(active,'active');
-  console.log('====================================');
-  // router.push(active)
-}
 </script>
 
 <template>
@@ -41,14 +44,27 @@ const handleTabChange = (active)=>{
     left-arrow
     @click-left="onClickLeft"
   /> -->
-  <RouterView />
-  <van-tabbar :placeholder="true" v-if="!currentRoute.noShowBottomTab" route v-model="active" @change="handleTabChange">
-    <van-tabbar-item :class="{'van-tabbar-item--active':active==0}" to="home" icon="home-o">首页</van-tabbar-item>
-    <van-tabbar-item :class="{'van-tabbar-item--active':active==1}" to="user" icon="user-o">我的</van-tabbar-item>
+  <div :class="{ hasTabbar: !currentRoute.noShowBottomTab }">
+    <RouterView />
+  </div>
+  <van-tabbar :placeholder="true" v-if="!currentRoute.noShowBottomTab" route>
+    <van-tabbar-item v-if="type == 1"
+      :class="{ 'van-tabbar-item--active': router.currentRoute.value.path === '/managerHomeVue' }" to="managerHomeVue"
+      icon="home-o">首页</van-tabbar-item>
+    <van-tabbar-item v-else 
+      :class="{ 'van-tabbar-item--active': router.currentRoute.value.path === '/userHomeVue' }"
+      to="userHomeVue" icon="home-o">首页</van-tabbar-item>
+    <van-tabbar-item 
+      :class="{ 'van-tabbar-item--active': router.currentRoute.value.path === '/user' }" to="user"
+      icon="user-o">我的</van-tabbar-item>
   </van-tabbar>
 </template>
 
 <style scoped>
+.hasTabbar {
+  height: calc(100vh - 50px);
+}
+
 header {
   line-height: 1.5;
   max-height: 100vh;
@@ -109,5 +125,4 @@ nav a:first-of-type {
     padding: 1rem 0;
     margin-top: 1rem;
   }
-}
-</style>
+}</style>

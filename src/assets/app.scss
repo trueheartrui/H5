@@ -1,3 +1,5 @@
+$primary:#1989fa;
+$danger:#ee0a24;
 html,body{
     height: 100%;
 }
@@ -16,10 +18,32 @@ html,body{
     padding: 16px;
 }
 
+.paddingLR16{
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
 .padding24{
     padding: 24px;
 }
 
 .paddingTop16{
     padding-top: 16px;
+}
+
+.noticeColor{
+    color: #c8c9cc;
+}
+
+.primaryColor{
+    color: $primary;
+}
+
+.dangerColor{
+    color: $danger;
+}
+
+:deep(.van-empty){
+    border-radius: 8px;
+    background-color: #fff;
 }

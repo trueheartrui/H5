@@ -1,27 +1,18 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
 import loginVue from '@/views/login.vue'
-import home from '@/views/home.vue'
 import register from '@/views/register.vue'
 import user from '@/views/user.vue'
-import patient from '@/views/patient.vue'
-import editPatient from '@/views/editPatient.vue'
-import toEditPatient from '@/views/toEditPatient.vue'
-import project from '@/views/project.vue'
+import userHomeVue from '@/views/userHome.vue'
+import managerHomeVue from '@/views/managerHome.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/',
-      redirect:'home',
-    },
-    {
       path: '/login',
       name: 'loginVue',
       meta: {
-        title: '',
-        show: false,
+        title: '登录',
         noShowBottomTab: true
       },
       component: loginVue
@@ -30,77 +21,94 @@ const router = createRouter({
       path: '/register',
       name: 'register',
       meta: {
+        title: '注册',
         noShowBottomTab: true
       },
-      component: () => import('../views/register.vue')
+      component: register
     },
     {
       path: '/user',
       name: 'user',
+      meta: { title: '我的' },
       component: user
     },
     {
-      path: '/home',
-      name: 'home',
-      meta:{title:'首页'},
-      component: home
+      path: '/userHomeVue',
+      name: 'userHomeVue',
+      meta: { title: '首页' },
+      component: userHomeVue
     },
     {
-      path: '/patient',
-      name: 'patient',
-      component: patient
+      path: '/managerHomeVue',
+      name: 'managerHomeVue',
+      meta: { title: '首页' },
+      component: managerHomeVue
+    },
+    {
+      path: '/addPatient',
+      name: 'addPatient',
+      meta: { title: '添加病人' },
+      component: ()=>import('../views/addPatient.vue')
     },
     {
       path: '/editPatient',
       name: 'editPatient',
-      meta: {
-        title: '编辑用户',
-        show: true,
-        noShowBottomTab: true
-      },
-      component: editPatient
-    },
-    {
-      path: '/toDo',
-      name: 'toDo',
-      component: () => import('../views/toDo.vue')
+      meta: { title: '编辑病人信息' },
+      component: ()=>import('../views/editPatient.vue')
     },
     {
       path: '/myProject',
       name: 'myProject',
+      meta: { title: '我的项目' },
       component: () => import('../views/myProject.vue')
     },
     {
-      path: '/toEditPatient',
-      name: 'toEditPatient',
-      component: () => import('../views/toEditPatient.vue')
+      path: '/editProject',
+      name: 'editProject',
+      meta: { title: '编辑项目' },
+      component: () => import('../views/editProject.vue')
     },
     {
       path: '/project',
       name: 'project',
+      meta: { title: '项目管理' },
       component: () => import('../views/project.vue')
     },
     {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue')
-    }
+      path: '/modifyPassword',
+      name: 'modifyPassword',
+      meta: { title: '修改密码' },
+      component: () => import('../views/modifyPassword.vue')
+    },
+    {
+      path: '/projectItemRecords',
+      name: 'projectItemRecords',
+      meta: { title: '项目明细' },
+      component: () => import('../views/projectItemRecords.vue')
+    },
   ]
 })
 
 const whiteRoutes = ['loginVue', 'register']
 router.beforeEach(((to, from) => {
-  console.log('====================================');
-  console.log(to, from, whiteRoutes.includes(to.name));
-  console.log('====================================');
+  // console.log('====================================');
+  // console.log(to, from, whiteRoutes.includes(to.name));
+  // console.log('====================================');
   const token = localStorage.getItem('token')
-  if (!token && !whiteRoutes.includes(to.name)) {
-    return { name: 'loginVue' }
-  } else if(token && to.name === 'loginVue'){
-    return { name: 'home' }
+  const type = localStorage.getItem('type')
+
+  if(!token){
+    if(!whiteRoutes.includes(to.name)){
+      return { name: 'loginVue' }
+    }
+  }else{
+    if(to.name === 'loginVue' || to.path === '/'){
+      if (type == 1) {
+        return { name: 'managerHomeVue' }
+      } else {
+        return { name: 'userHomeVue' }
+      }
+    }
   }
 }))
 

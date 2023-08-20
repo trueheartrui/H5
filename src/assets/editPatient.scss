@@ -1,23 +1,38 @@
+:deep(.item){
+  margin-bottom: 15px;
+}
 .footer{
-  position: fixed;
-  left: 15px;
-  bottom: 0;
   width: 345px;
-  background-color: #fff;
+  min-height: 40px;
+  margin: 0 auto;
+  margin-top: 10px;
+  margin-bottom: 20px;
   .save{
     margin-bottom: 30px;
   }
 }
+.iconWrapper {
+  padding-left: 16px;
+  padding-right: 16px;
+}
 .editPatient{
-  min-height: 100vh;
-  padding-bottom: 104px;
+  height: 100%;
   box-sizing: border-box;
   overflow: auto;
+  display: flex;
+  flex-direction: column;
+}
+.content{
+  flex: 1;
 }
 .add{
   width: 345px;
   margin: 0 auto;
   margin-top: 40px;
+}
+:deep(.van-empty){
+  border-radius: 8px;
+  background-color: #fff;
 }
 
 .addItem{
@@ -35,8 +50,17 @@
 }
 .operation{
   margin-top: 10px;
+  margin-bottom: 10px;
+  margin-right: 10px;
 }
 .delteText{
   color: #ee0a24;
   font-size: 14px;
+  margin-right: 10px;
+}
+.detail{
+  font-size: 14px;
+}
+:deep(.range){
+  flex:none
 }
