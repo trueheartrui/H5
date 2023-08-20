@@ -13,7 +13,8 @@ const router = createRouter({
       name: 'loginVue',
       meta: {
         title: '登录',
-        noShowBottomTab: true
+        noShowBottomTab: true,
+        noShowNavBar:true
       },
       component: loginVue
     },
@@ -22,26 +23,27 @@ const router = createRouter({
       name: 'register',
       meta: {
         title: '注册',
-        noShowBottomTab: true
+        noShowBottomTab: true,
+        noShowNavBar:true
       },
       component: register
     },
     {
       path: '/user',
       name: 'user',
-      meta: { title: '我的' },
+      meta: { title: '我的', noShowNavBar:true },
       component: user
     },
     {
       path: '/userHomeVue',
       name: 'userHomeVue',
-      meta: { title: '首页' },
+      meta: { title: '首页', noShowNavBar:true },
       component: userHomeVue
     },
     {
       path: '/managerHomeVue',
       name: 'managerHomeVue',
-      meta: { title: '首页' },
+      meta: { title: '首页', noShowNavBar:true },
       component: managerHomeVue
     },
     {

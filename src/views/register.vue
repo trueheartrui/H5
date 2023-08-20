@@ -27,6 +27,9 @@
     </van-cell-group>
 
     <div class="margin16">
+      <div class="toLogin">
+        <router-link class="register" to="/login">已有账号，去登录</router-link>
+      </div>
       <van-button round block type="primary" native-type="submit">
         注册
       </van-button>
@@ -98,9 +101,10 @@ const onFailed = (errorInfo) => {
 .icon{
   margin-right: 16px;
 }
-.toRegister{
+.toLogin{
   text-align: right;
   margin-right: 16px;
+  margin-bottom: 10px;
 }
 .login,.register{
   font-size: 14px;

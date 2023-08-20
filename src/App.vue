@@ -8,7 +8,7 @@ const type = ref('')
 const active = ref(0)
 const currentRoute = reactive({
   title: '',
-  show: false,
+  noShowNavBar: false,
   noShowBottomTab: false
 })
 
@@ -16,15 +16,22 @@ onMounted(()=>{
   console.log('====================================');
   console.log(type);
   console.log('====================================');
+
+  document.body.addEventListener('touchmove',(e)=>{
+    e.preventDefault()
+  },{passive:false})
 })
 
 watchEffect(() => {
   // console.log('====================================');
   // console.log(router.currentRoute);
   // console.log('====================================');
-  const { title, show, noShowBottomTab } = router.currentRoute.value.meta
-  // currentRoute.title = title || ''
-  // currentRoute.show = show || false
+  const { title, noShowNavBar, noShowBottomTab } = router.currentRoute.value.meta
+  console.log('====================================');
+  console.log(noShowNavBar,'---------');
+  console.log('====================================');
+  currentRoute.title = title || ''
+  currentRoute.noShowNavBar = noShowNavBar
   currentRoute.noShowBottomTab = noShowBottomTab
   document.title = title
   type.value = localStorage.getItem('type')
@@ -37,13 +44,13 @@ const onClickLeft = () => {
 </script>
 
 <template>
-  <!-- <van-nav-bar
-    v-if="currentRoute.show"
+  <van-nav-bar
+    v-if="!currentRoute.noShowNavBar"
     :title="currentRoute.title"
     left-text="返回"
     left-arrow
     @click-left="onClickLeft"
-  /> -->
+  />
   <div :class="{ hasTabbar: !currentRoute.noShowBottomTab }">
     <RouterView />
   </div>
@@ -62,7 +69,7 @@ const onClickLeft = () => {
 
 <style scoped>
 .hasTabbar {
-  height: calc(100vh - 50px);
+  height: calc(100vh - 96px);
 }
 
 header {

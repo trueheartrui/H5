@@ -35,7 +35,7 @@ const onSubmit = () => {
       showSuccessToast('添加成功')
       router.replace({
         path: 'editPatient',
-        query: { userId: res.data }
+        query: { id: res.data }
       })
     }
   })
