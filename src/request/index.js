@@ -1,7 +1,7 @@
 import axios from "axios";
 import { showFailToast, showLoadingToast } from 'vant';
 
-// axios.defaults.baseURL = 'http://154.8.146.47:8002';
+axios.defaults.baseURL = 'http://154.8.146.47/';
 let loadingInstance = null
 // 添加请求拦截器
 axios.interceptors.request.use(function (config) {
