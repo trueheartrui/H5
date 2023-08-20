@@ -16,10 +16,6 @@ onMounted(()=>{
   console.log('====================================');
   console.log(type);
   console.log('====================================');
-
-  document.body.addEventListener('touchmove',(e)=>{
-    e.preventDefault()
-  },{passive:false})
 })
 
 watchEffect(() => {
